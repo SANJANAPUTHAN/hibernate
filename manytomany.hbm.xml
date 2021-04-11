@@ -1,0 +1,41 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	
+    <class name="manytomany.Employee" table="EMPLOYEES">
+        <id name="id" type="java.lang.Integer">			
+			<generator class="hilo" />
+		</id>
+        <property name="name"/>
+        <property name="marks"/>
+      <set name="training" table ="EMPLOYEE_HAS_TRAINING" inverse="false" cascade="all" >
+        <key column="EMPLOYEE_ID"/>
+        <many-to-many column="TRAINING_TID" class="manytomany.Trainings"/>
+	  </set>
+	</class>
+	
+	
+	<class name="manytomany.Trainings" table="TRAINING">
+		<id name="tid" type="int" unsaved-value="0">
+			<generator class="hilo"/>
+		</id>
+		<property name="tname"/>
+		<property name="tdate"/>
+		
+		<set name="employee" table ="EMPLOYEE_HAS_TRAINING" cascade="all" >
+        	<key column="TRAINING_TID"/>
+        	<many-to-many column="EMPLOYEE_ID" class="manytomany.Employee"/>
+		</set>
+	</class>
+	
+	<class name="manytomany.BackupEmployee" table="BACKUPEMPLOYEE">
+	 <id name="eid" type="java.lang.Integer">			
+			
+		</id>
+        <property name="ename" />
+        <property name="emarks" />
+	</class>
+	
+	<query name="myquery">from Employee emp where emp.marks>=20 </query>
+</hibernate-mapping>
